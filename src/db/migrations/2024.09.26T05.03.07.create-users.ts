@@ -1,7 +1,8 @@
 import { Migration } from "../scripts/dbMigrate";
 
 export const up: Migration = async (params) => {
-  return params.context.query(`
+  
+  await params.context.query(`
     CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
@@ -13,11 +14,18 @@ export const up: Migration = async (params) => {
     lastName VARCHAR(50),
     role VARCHAR(50) NOT NULL DEFAULT 'user',
     CHECK (role IN ('admin', 'user')),
-    createdAt TIMESTAMP  NOT NULL,
-    updatedAt TIMESTAMP  NOT NULL
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`
   );
+
+
+  
+
+  
+
 };
+
 export const down: Migration = async (params) => {
-  return params.context.query(`DROP TABLE users;`);
+  await params.context.query(`DROP TABLE IF EXISTS users;`);
 };

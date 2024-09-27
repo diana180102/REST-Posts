@@ -6,7 +6,7 @@ export const up: Migration = async (params) => {
     id SERIAL PRIMARY KEY,
     postId INTEGER NOT NULL,
     userId INTEGER NOT NULL,
-    createdAt TIMESTAMP  NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(userId, postId),
     FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (postId) REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE

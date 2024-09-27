@@ -12,8 +12,8 @@ export const up: Migration = async (params) => {
     const username =  faker.internet.userName();
     const password =  faker.internet.password();
     const email = faker.internet.email();
-    const firstName = faker.person.firstName();
-    const lastName = faker.person.lastName();
+    const firstName = faker.person.firstName().replace(/'/g, "''");
+    const lastName = faker.person.lastName().replace(/'/g, "''");
     const role = Math.random() < 0.7 ? 'user' : 'admin';
     const createdAt = faker.date.past().toISOString();
     const updatedAt = faker.date.recent().toISOString();
