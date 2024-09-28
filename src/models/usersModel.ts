@@ -6,7 +6,7 @@ export const UsersSchema = z.object({
         required_error: "username is required",
         invalid_type_error : "username have to string"
     })
-    .regex(/'^[a-zA-Z0-9_.-]{3,100}$/, {
+    .regex(/^[a-zA-Z0-9_.-]{3,100}$/, {
         message: "Invalid username format"
     }),
 
@@ -17,15 +17,15 @@ export const UsersSchema = z.object({
     .min(6, "Password must be at least 6 characters long")
     .max(255, "Password must be a most 255 characters long"),
 
-    email: z.string().email({ message: "Invalid email address" }),
+    email: z.string().email({ message: "Invalid email address" }).optional(),
     
     firstName: z.string({
         invalid_type_error : "firstName have to string"
-    }),
+    }).optional(),
 
     lastName: z.string({
         invalid_type_error : "lastName have to string"
-    }),
+    }).optional(),
 
     role: z.enum(['admin', 'user']).default('user'),
 
@@ -33,4 +33,5 @@ export const UsersSchema = z.object({
 
 });
 
-export type Users = z.infer<typeof UsersSchema>;
+export type UsersParams = z.infer<typeof UsersSchema>;
+export type Users = UsersParams & {id: number};

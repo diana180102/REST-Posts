@@ -14,16 +14,20 @@
     "db:reset": "npm run db:drop && npm run db:create && npm run db:migrate up"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.16.4",
     "express-app": "file:",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.0",
     "umzug": "^3.8.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.2",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.16.1",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.10.6",
     "@types/pg": "^8.10.9",
     "nodemon": "^3.0.2",
