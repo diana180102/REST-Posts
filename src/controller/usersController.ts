@@ -96,6 +96,25 @@ export class UsersController{
        }
 
    }
+
+   async deleteUser(req:AuthencatedRequest, res:Response, next:NextFunction){
+        try {
+         const username = req.user?.username;
+
+         if(!username){
+            return next(new ApiError("User not found", 404));
+         }
+         
+          await usersService.deleteUser(username);
+
+          res.status(200).json({
+             ok: true
+          });
+
+        } catch (error) {
+           return next(error);
+        }
+   }
 }
 
 export const usersController = new UsersController();

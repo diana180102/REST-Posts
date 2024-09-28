@@ -15,3 +15,4 @@ userRouter.post('/login', validationHandler(loginSchema), usersController.loginU
 
 userRouter.get('/me', authentication, usersController.getUserByUsername);
 userRouter.patch('/me', authentication, validationHandler(UserUpdateSchema), usersController.updateUser);
+userRouter.delete('/me', authentication, usersController.deleteUser);

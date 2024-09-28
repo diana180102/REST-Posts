@@ -68,6 +68,16 @@ export class UsersData {
 
    }
 
+   async deleteUser(userId: number){
+       
+       const deleted = `DELETE FROM users WHERE id = $1`;
+
+       const result = await pool.query(deleted, [userId]);
+
+     return result.rows[0];
+
+   }
+
 }
 
 export const usersData = new  UsersData();

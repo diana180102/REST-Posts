@@ -42,40 +42,53 @@ export class UsersService {
   }
 
   async loginUser(username: string, password: string) {
-    
     const user = await usersData.getUserByUsername(username);
 
     if (!user) {
       throw new ApiError("User not found", 404);
     }
-    
-    const pass = await bcrypt.compare(password, user.password);
 
-    if (pass) {
-      const dataToken = jwt.sign(
-        {
-          username: user.username,
-          email: user.email,
-          role: user.role,
-        },
-        config.secret.key,
-        { expiresIn: "1h" }
-      );
+    const storedPass = user.password;
 
-      return dataToken;
+    if (storedPass.startsWith("$2")) {
+      const pass = await bcrypt.compare(password, storedPass);
+      if (!pass) {
+        throw new ApiError("Invalid credentials", 401);
+      }
     } else {
-      throw new ApiError("Invalid credentials", 401);
+      // Si la contraseña almacenada está en texto plano, verifica directamente
+      if (password !== storedPass) {
+        throw new ApiError("Invalid credentials", 401);
+      }
     }
+
+    const dataToken = jwt.sign(
+      {
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+      config.secret.key,
+      { expiresIn: "1h" }
+    );
+
+    return dataToken;
   }
 
-  async updateUser(dataUpdate:UpdateUser, username:string){
-         
+  async updateUser(dataUpdate: UpdateUser, username: string) {
     const user = await usersData.getUserByUsername(username);
 
-    
-
     return await usersData.updateUser(dataUpdate, user.id);
-  
+  }
+
+  async deleteUser(username: string) {
+    const user = await usersData.getUserByUsername(username);
+
+    if (!user) {
+      return new ApiError("user not found", 401);
+    }
+
+    return await usersData.deleteUser(user.id);
   }
 }
 
