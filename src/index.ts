@@ -9,9 +9,9 @@ dotenv.config();
 const app = express();
 const port = 5500;
 
-app.use(errorHandler);
 app.use(express.json());
 app.use('/', userRouter);
 app.use('/', postRouter);
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`Escuchando al puerto ${port}`));

@@ -1,9 +1,14 @@
 import { postData } from "../data/postData";
 import { usersData } from "../data/usersData";
 import { ApiError } from "../middlewares/error";
-import { Post, PostSchemaParam } from "../models/postModel";
+import { Post, PostSchemaParam, UpdatePostSchemaParam} from "../models/postModel";
 
 export class PostService {
+
+  async getPostById(postId:number){
+      return await postData.getPostById(postId);
+   }
+  
   async createNewPost(post: PostSchemaParam, username: string): Promise<Post> {
     const user = await usersData.getUserByUsername(username);
 
@@ -11,12 +16,27 @@ export class PostService {
       throw new ApiError("User not found", 404);
     }
 
-    const newPost = await postData.createNewPost(post, user.id);
-    const dataPost = await postData.countLikesPost(newPost.id);
+    const newPost = await postData.createNewPost(post, user.id); // created post
+    const dataPost = await postData.countLikesPost(newPost.id); // find data post
   
 
     return dataPost;
   }
+
+   async updatePost(post:UpdatePostSchemaParam , postId:number){
+
+     
+      
+          await postData.updatePost(post, postId);
+      const dataPostUpdate = await postData.countLikesPost(postId); 
+
+      return dataPostUpdate ;
+   }
+
+
+   
 }
+
+
 
 export const postService = new PostService();

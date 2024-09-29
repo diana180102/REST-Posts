@@ -1,7 +1,17 @@
 import { pool } from "../db/database";
-import { Post, PostSchema, PostSchemaParam } from "../models/postModel";
+import { Post, PostSchema, PostSchemaParam, UpdatePostSchemaParam } from "../models/postModel";
 
 export class PostData {
+
+
+   async getPostById(postId:number){
+
+      const consult = `SELECT * FROM posts WHERE id = $1;`;
+      const result = await pool.query(consult, [postId]);
+
+      return result.rows[0];
+
+   }
 
    
 
@@ -22,6 +32,22 @@ export class PostData {
        
        return result.rows[0];
  
+
+   }
+
+
+   async updatePost(post:UpdatePostSchemaParam , postId:number):Promise<Post>{
+       
+   
+      const fields = Object.keys(post)[0];
+      
+      const updateData = `UPDATE posts SET ${fields} = $1 WHERE id = $2;`;
+      const params = [post, postId];
+
+      const result = await pool.query(updateData, params);
+
+      return result.rows[0];
+
 
    }
 

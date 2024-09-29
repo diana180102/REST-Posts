@@ -9,5 +9,9 @@ export const PostSchema = z.object({
     }),
 })
 
+
+export const UpdatePostSchema = PostSchema.partial();
+
 export type PostSchemaParam = z.infer<typeof PostSchema>;
+export type UpdatePostSchemaParam = z.infer<typeof UpdatePostSchema>;
 export type Post = PostSchemaParam & {id: number};
