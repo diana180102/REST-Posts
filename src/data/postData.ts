@@ -13,6 +13,15 @@ export class PostData {
 
    }
 
+   async getLikeByPost(postId:number, userId:number){
+      const consult = `SELECT COUNT(*) AS "likeCount" FROM likes WHERE postid = $1 AND userid = $2;`;
+
+      const result = await pool.query(consult, [postId, userId]);
+
+      return result.rows[0];
+
+   }
+
    
 
    async createNewPost(post:PostSchemaParam, userId:number):Promise<Post>{
@@ -56,6 +65,14 @@ export class PostData {
        
        const insertLike = `INSERT INTO likes (postid, userId) VALUES ($1, $2) RETURNING *;`;
        const result =  await pool.query(insertLike, [posId, userId]);
+
+       return result.rows[0];
+   }
+
+   async deleteLikeByPost(postId:number, userId:number){
+       
+       const deletedLike = `DELETE FROM likes WHERE postid = $1 AND userid = $2;`;
+       const result = await pool.query(deletedLike,[postId, userId]);
 
        return result.rows[0];
    }
