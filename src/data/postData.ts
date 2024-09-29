@@ -4,7 +4,7 @@ import { Post, PostSchema, PostSchemaParam, UpdatePostSchemaParam } from "../mod
 export class PostData {
 
 
-   async getPostById(postId:number){
+   async getPostById(postId:number):Promise<Post>{
 
       const consult = `SELECT * FROM posts WHERE id = $1;`;
       const result = await pool.query(consult, [postId]);
@@ -49,6 +49,15 @@ export class PostData {
       return result.rows[0];
 
 
+   }
+
+
+   async insertLikeByPost(posId:number, userId:number){
+       
+       const insertLike = `INSERT INTO likes (postid, userId) VALUES ($1, $2) RETURNING *;`;
+       const result =  await pool.query(insertLike, [posId, userId]);
+
+       return result.rows[0];
    }
 
 

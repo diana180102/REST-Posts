@@ -10,3 +10,5 @@ const postController = new PostsController();
 
 postRouter.post('/posts', authentication, validationHandler(PostSchema), postController.createNewPost);
 postRouter.patch('/posts/:id', authentication, validationHandler(UpdatePostSchema), postController.updatePost);
+
+postRouter.post('/posts/:postId/likes', authentication, postController.insertLikeByPost );

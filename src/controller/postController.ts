@@ -70,6 +70,30 @@ export class PostsController {
             return next(error);
         }
     }
+
+    async insertLikeByPost(req: AuthencatedRequest, res: Response, next: NextFunction){
+         try {
+            
+            const {postId} = req.params;
+            const username = req.user?.username;
+            
+            if(!username){
+                 return next(new ApiError("User not found", 404));
+            }
+
+            const newLike = await postService.insertLikeByPost(parseInt(postId), username);
+            
+             return res.status(201).json({
+                ok: true,
+                message: "Like registered",
+                data: newLike,
+            });
+
+
+         } catch (error) {
+            return next(error);
+         }
+    }
 }
 
 export const postController = new PostsController();

@@ -33,6 +33,28 @@ export class PostService {
       return dataPostUpdate ;
    }
 
+   async insertLikeByPost(postId:number, username:string){
+      
+      const user =  await usersData.getUserByUsername(username);
+      const post = await postData.getPostById(postId);
+      
+       
+      if(!user){
+         throw new ApiError("User not found", 404);
+      }
+
+      if(!post){
+        throw new ApiError("Post not found", 404);
+      }
+
+          await postData.insertLikeByPost(post.id, user.id );
+        const newLike = await postData.countLikesPost(postId); 
+
+      return newLike;
+            
+   
+   }
+
 
    
 }
