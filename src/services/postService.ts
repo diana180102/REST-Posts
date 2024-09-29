@@ -86,6 +86,28 @@ export class PostService {
    }
 
 
+   async getPostByUsername(username:string, page: number, limit:number, sort:string){
+        
+        // Si el username se proporciona, se busca al usuario
+        if (username) {
+            const user = await usersData.getUserByUsername(username);
+            
+            if (!user) {
+                throw new ApiError("User not found", 404);
+            }
+        }
+
+    
+        
+        
+        const filters = username ? {username} : {};
+        const posts = await postData.getPostByUsername(filters, sort, page, limit );
+        const totalPost = await postData.getCountPostByUser(filters);
+
+        return {posts, totalPost};
+  }
+
+
    
 }
 

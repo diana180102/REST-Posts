@@ -13,3 +13,7 @@ postRouter.patch('/posts/:id', authentication, validationHandler(UpdatePostSchem
 
 postRouter.post('/posts/:postId/likes', authentication, postController.insertLikeByPost );
 postRouter.delete('/posts/:postId/likes', authentication, postController.deleteLikeByPost );
+
+postRouter.get('/:username', postController.getPostByUsername);
+postRouter.get('/', postController.getPostAll);
+

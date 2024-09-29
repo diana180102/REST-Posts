@@ -1,5 +1,5 @@
 // controllers/postsController.ts
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { PostSchemaParam, UpdatePostSchema } from '../models/postModel';
 import { AuthencatedRequest } from '../middlewares/authentication';
 import { postService } from '../services/postService';
@@ -117,6 +117,88 @@ export class PostsController {
          } catch (error) {
             return next(error);
          }
+    }
+
+
+    async getPostByUsername(req: Request, res: Response, next: NextFunction){
+        try {
+            
+            const {username} = req.params;
+
+            
+            
+            const { page = 1, limit = 10, orderBy = `posts.createdAt`,  order = "asc" } = req.query;
+
+            const numPage = Number(page);
+            const numLimit = Number(limit)
+            
+
+            const postData = await postService.getPostByUsername(
+                username, numPage, numLimit, `${orderBy}_${order}` );
+
+                console.log(postData);
+            
+            const pagination = {
+                page : numPage,
+                pageSize : numLimit,
+                totalItem: postData.totalPost,
+                totalPages: Math.ceil(postData.totalPost / numLimit),
+                nextPages: numPage < Math.ceil(postData.totalPost /  numLimit ) ? numPage :null,
+                previousPage: numPage > 1 ? numPage - 1 : null,
+            }
+
+            return res.status(200).json({
+                ok:true,
+                data:postData.posts,
+                pagination
+                
+            });
+
+
+        } catch (error) {
+           return next(error);
+        }
+    }
+
+
+    async getPostAll(req: Request, res: Response, next: NextFunction){
+        try {
+            
+           
+
+            
+            
+            const { page = 1, limit = 10, username, orderBy = `posts.createdAt`,  order = "asc" } = req.query;
+
+            const numPage = Number(page);
+            const numLimit = Number(limit)
+            const user = username  as string;
+            
+
+            const postData = await postService.getPostByUsername( user, numPage, numLimit, `${orderBy}_${order}` );
+
+                console.log(postData);
+            
+            const pagination = {
+                page : numPage,
+                pageSize : numLimit,
+                totalItem: postData.totalPost,
+                totalPages: Math.ceil(postData.totalPost / numLimit),
+                nextPages: numPage < Math.ceil(postData.totalPost /  numLimit ) ? numPage :null,
+                previousPage: numPage > 1 ? numPage - 1 : null,
+            }
+
+            return res.status(200).json({
+                ok:true,
+                data:postData.posts,
+                pagination
+                
+            });
+
+
+        } catch (error) {
+           return next(error);
+        }
     }
 }
 
