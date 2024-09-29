@@ -27,7 +27,8 @@ export default function errorHandler(error:Error, _req:Request, res:Response, _n
         res.status(500).json({
             ok: false,
             error:{
-                message: "Error internal on server"
+                message: "Error internal on server",
+                error: error.stack
             }
         });
     }
