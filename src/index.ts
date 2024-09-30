@@ -1,12 +1,23 @@
 import express from "express";
-import dotenv from 'dotenv';
+import dotenv, { configDotenv } from 'dotenv';
 import { userRouter } from "./routes/usersRoutes";
 import errorHandler from "./middlewares/error";
 import { postRouter } from "./routes/postsRoutes";
 
+// import { config } from "./config/config";
+
 dotenv.config();
 
-const app = express();
+if (process.env["NODE_ENV"] === "test") {
+  configDotenv({ path: ".env.test" });
+  // console.log("Database: ", config.db.database);
+  // console.log("Loaded .env.test");
+  // console.log(process.env);
+} else {
+  configDotenv();
+}
+
+export const app = express();
 const port = 5500;
 
 app.use(express.json());

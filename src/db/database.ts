@@ -1,10 +1,25 @@
+import { configDotenv } from "dotenv";
 import { config } from "../config/config";
 import { Pool, Client } from "pg";
+ 
+ let mainDB = "bd_test";  
+
+if (process.env["NODE_ENV"] === "test") {
+  configDotenv({ path: ".env.test" });
+  // console.log("Database: ", config.db.database);
+  // console.log("Loaded .env.test");
+  // console.log(process.env);
+    mainDB = config.db.db_test as string;
+} else {
+  configDotenv();
+   mainDB = config.db.database as string;
+}
+
 
 export const pool = new Pool({
   host: config.db.host,
   port: config.db.port,
-  database: config.db.database,
+  database: mainDB,
   user: config.db.user,
   password: config.db.password,
 });

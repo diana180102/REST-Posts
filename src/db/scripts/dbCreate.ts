@@ -1,9 +1,25 @@
-import "dotenv/config";
+// import "dotenv/config";
+// import path from "path";
 import { config } from "../../config/config";
 import { adminClient } from "../database";
+import  { configDotenv } from "dotenv";
 
 
-const dbName = config.db.database;
+let mainDB = "bd_test";  
+
+if (process.env["NODE_ENV"] === "test") {
+  configDotenv({ path: ".env.test" });
+  // console.log("Database: ", config.db.database);
+  // console.log("Loaded .env.test");
+  // console.log(process.env);
+    mainDB = config.db.db_test as string;
+} else {
+  configDotenv();
+   mainDB = config.db.database as string;
+}
+
+
+const dbName = mainDB;
 
 const createDB  = async () =>{
 

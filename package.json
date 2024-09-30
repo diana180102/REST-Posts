@@ -7,10 +7,10 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "db:migrate": "ts-node src/db/scripts/dbMigrate.ts",
-    "db:create": "ts-node src/db/scripts/dbCreate.ts",
-    "db:drop": "ts-node src/db/scripts/dbDrop.ts && rm -f src/db/migrations/migrations.json",
+    "test": "cross-env NODE_ENV=test vitest",
+    "db:migrate": " cross-env NODE_ENV=test ts-node src/db/scripts/dbMigrate.ts",
+    "db:create": "cross-env NODE_ENV=test ts-node src/db/scripts/dbCreate.ts",
+    "db:drop": " cross-env NODE_ENV=test ts-node src/db/scripts/dbDrop.ts && rm -f src/db/migrations/migrations.json",
     "db:reset": "npm run db:drop && npm run db:create && npm run db:migrate up"
   },
   "dependencies": {
@@ -30,9 +30,13 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.10.6",
     "@types/pg": "^8.10.9",
+    "@types/supertest": "^6.0.2",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.0.2",
+    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.1"
   },
   "keywords": [],
   "author": "",
