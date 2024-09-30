@@ -2,6 +2,8 @@ import "dotenv/config";
 import { adminClient } from "../database";
 import { config } from "../../config/config";
 
+
+
 const dbName = config.db.database;
 
 adminClient.connect();

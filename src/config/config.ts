@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+
 export const config = {
     db:{
         host: process.env["PGHOST"],
@@ -7,6 +8,7 @@ export const config = {
         user: process.env["PGUSER"],
         password: process.env["PGPASSWORD"],
         database: process.env["PGDATABASE"],
+        db_test: process.env["BDTEST"]
         
         }, 
     server: {
@@ -17,6 +19,8 @@ export const config = {
     }
 
 }
+
+
 
 
 
